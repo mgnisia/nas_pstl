@@ -27,27 +27,25 @@
 #---------------------------------------------------------------------------
 # This is the C compiler used for OpenMP programs
 #---------------------------------------------------------------------------
-CC = icpc
-#gcc #cc
+CC=g++
+
 # This links C programs; usually the same as ${CC}
 CLINK	= $(CC)
 
 #---------------------------------------------------------------------------
 # These macros are passed to the linker 
 #---------------------------------------------------------------------------
-#C_LIB  = -lm -ltbb
-C_LIB = -lm $(TBB_SHLIB)
+C_LIB = -lm $(TBB_SHLIB) -I$TBB_INCLUDE -Wl,-rpath,$TBB_LIBRARY_RELEASE -L$TBB_LIBRARY_RELEASE -ltbb
 
 #---------------------------------------------------------------------------
 # These macros are passed to the compiler 
 #---------------------------------------------------------------------------
-#C_INC = -I../common 
 C_INC = -I../common $(TBB_INC)
 
 #---------------------------------------------------------------------------
 # Global *compile time* flags for C programs (use -w3 -diag-disable 981 -diag-disable 383)
 #---------------------------------------------------------------------------
-CFLAGS	= -O3 -std=c++17 -tbb -mcmodel=large
+CFLAGS = -O3 -std=c++17 -mcmodel=large -fopenmp
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
@@ -63,8 +61,7 @@ CLINKFLAGS = -O3 -mcmodel=large
 # this compiler go here also; typically there are few flags required; hence 
 # there are no separate macros provided for such flags.
 #---------------------------------------------------------------------------
-UCC		= icpc
-#UCC	= cc
+UCC	= g++
 
 
 #---------------------------------------------------------------------------
