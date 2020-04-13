@@ -1,0 +1,5 @@
+# Gitignore
+bin/
+
+# O Files
+*.o
