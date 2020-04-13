@@ -34,7 +34,7 @@ c---------------------------------------------------------------------
 
 #include <vector>
 #include <numeric>
-#include <tbb/task_scheduler_init.h>
+#include <tbb/tbb.h>
 #include <mutex>
 
 #include <iostream>
