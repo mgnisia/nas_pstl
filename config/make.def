@@ -35,23 +35,23 @@ CLINK	= $(CC)
 #---------------------------------------------------------------------------
 # These macros are passed to the linker 
 #---------------------------------------------------------------------------
-C_LIB = -lm $(TBB_SHLIB) -I$TBB_INCLUDE -Wl,-rpath,$TBB_LIBRARY_RELEASE -L$TBB_LIBRARY_RELEASE -ltbb
+C_LIB = -lm -ltbb
 
 #---------------------------------------------------------------------------
 # These macros are passed to the compiler 
 #---------------------------------------------------------------------------
-C_INC = -I../common $(TBB_INC)
+C_INC = -I../common -I${TBB_INCLUDE} -Wl,-rpath,${TBB_LIBRARY_RELEASE} -L${TBB_LIBRARY_RELEASE}
 
 #---------------------------------------------------------------------------
 # Global *compile time* flags for C programs (use -w3 -diag-disable 981 -diag-disable 383)
 #---------------------------------------------------------------------------
-CFLAGS = -O3 -std=c++17 -mcmodel=large -fopenmp
+CFLAGS = -O3 -std=c++17 -fopenmp
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. (use -w3 -diag-disable 981 -diag-disable 383)
 #---------------------------------------------------------------------------
-CLINKFLAGS = -O3 -mcmodel=large
+CLINKFLAGS = -O3
 
 
 #---------------------------------------------------------------------------
