@@ -3,12 +3,24 @@
 ## Ported Kernels
 
 - [x] CG
-- [ ] EP
-- [ ] FT
-- [ ] IS
-- [ ] MG
+- [x] EP
+- [x] FT
+- [x] IS
+- [x] MG
 
-## Setup 
+## Setup with installation of libraries
+
+### Ubuntu
+
+1. `apt-get update && apt-get upgrade`
+2. `apt-get install -y build-essential libtbb-dev`
+
+### Arch
+
+1. `pacman -Sy && pacman -S gcc make intel-tbb libffi`
+
+
+## Setup with manual download of the tbb library
 
 1. Download [TBB Library](https://github.com/oneapi-src/oneTBB) and [GCC9](https://gcc.gnu.org/gcc-9/changes.html) compiler. Note: Since this version it allows to use the c++17 parallel implementations, i.e. with `std::parallel`. [Link to Release](https://gcc.gnu.org/gcc-9/changes.html)
 
@@ -28,7 +40,10 @@ TBB_INCLUDE=$TBB_INSTALL_DIR/include;
 TBB_LIBRARY_RELEASE=$TBB_INSTALL_DIR/build/YOUR_VERSION;
 ```
 
-4. Run `make CG`
+4. Run `make cg CLASS=S`
+
+5. Execute Kernel with `./bin/cg.S`
+
 
 # Original Readme
 
