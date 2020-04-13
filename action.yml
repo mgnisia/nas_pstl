@@ -1,0 +1,6 @@
+# action.yml for build containers
+name: 'UbuntuDocker'
+description: 'Greet someone and record the time'
+runs:
+  using: 'docker'
+  image: 'Docker/ubuntu.Dockerfile'
