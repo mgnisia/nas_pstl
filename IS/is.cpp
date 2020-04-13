@@ -19,20 +19,17 @@
 #include "npbparams.hpp"
 #include <cstdlib>
 #include <cstdio>
-//#include <omp.h>
 #include <iostream>
 
-#include "pstl/execution"
-#include "pstl/algorithm"
-#include "pstl/numeric"
-
-//#include "../common/mystl.h"
+#include "execution"
+#include "algorithm"
+#include "numeric"
 
 #include <mutex>
 #include <thread>
 #include <vector>
 #include <numeric>
-#include <tbb/task_scheduler_init.h>
+#include <tbb/tbb.h>
 #include "tbb/enumerable_thread_specific.h"
 
 /*****************************************************************/
@@ -428,7 +425,7 @@ void full_verify( void )
 	
 	/*  Copy keys into work array; keys in key_array will be reassigned. */
 	
-	std::copy(pstl::execution::par, &key_array[0], &key_array[NUM_KEYS], &key_buff2[0]);
+	std::copy(std::execution::par, &key_array[0], &key_array[NUM_KEYS], &key_buff2[0]);
 	
 	// This is actual sorting. Each thread is responsible for a subset of key values
 	
@@ -439,7 +436,7 @@ void full_verify( void )
 	
 	/*  Confirm keys correctly sorted: count incorrectly sorted keys, if any */
 	
-	bool is_sorted = std::is_sorted(pstl::execution::par, &key_array[0], &key_array[NUM_KEYS]);
+	bool is_sorted = std::is_sorted(std::execution::par, &key_array[0], &key_array[NUM_KEYS]);
 	
 	if(!is_sorted)
 		printf( "Full_verify: number of keys out of sort: %ld\n", (long)j );
@@ -491,7 +488,7 @@ void rank( int iteration )
 	int v1[NUM_BUCKETS];
 	std::iota(&v1[0], &v1[NUM_BUCKETS], 0);
 
-	std::for_each(pstl::execution::par, &v[0], &v[l], [&bucket_size, &l, &shift](int j) {
+	std::for_each(std::execution::par, &v[0], &v[l], [&bucket_size, &l, &shift](int j) {
 		
 		for(INT_TYPE i = 0; i < NUM_BUCKETS; i++) bucket_size[j][i] = 0;
 
@@ -505,7 +502,7 @@ void rank( int iteration )
 	INT_TYPE sum[NUM_BUCKETS];
 	sum[0]=0;
 
-	std::for_each(pstl::execution::par, &v1[1], &v1[NUM_BUCKETS], [&bucket_ptrs, &bucket_size, &sum, &l](int i){
+	std::for_each(std::execution::par, &v1[1], &v1[NUM_BUCKETS], [&bucket_ptrs, &bucket_size, &sum, &l](int i){
 
 		sum[i]=0;
 
@@ -514,13 +511,13 @@ void rank( int iteration )
 
 	for(int i = 1; i < NUM_BUCKETS; i++) bucket_ptrs[0][i] = bucket_ptrs[0][i-1] + sum[i];
 
-	std::for_each(pstl::execution::par, &v1[0], &v1[NUM_BUCKETS], [&bucket_ptrs, &bucket_size, &l](int i){
+	std::for_each(std::execution::par, &v1[0], &v1[NUM_BUCKETS], [&bucket_ptrs, &bucket_size, &l](int i){
 
 		for(int k = 1; k < l; k++) bucket_ptrs[k][i] = bucket_ptrs[k-1][i] + bucket_size[k-1][i];
 	});
 	
 
-	std::for_each(pstl::execution::par, &v[0], &v[l], [&bucket_ptrs, &l, &shift](int j) {
+	std::for_each(std::execution::par, &v[0], &v[l], [&bucket_ptrs, &l, &shift](int j) {
 
 		for(INT_TYPE i = j; i < NUM_KEYS; i+=l){
 			
@@ -529,7 +526,7 @@ void rank( int iteration )
 		}
 	});
 
-	std::for_each(pstl::execution::par, &v1[0], &v1[NUM_BUCKETS], [&bucket_ptrs, &l, &shift](int i) {
+	std::for_each(std::execution::par, &v1[0], &v1[NUM_BUCKETS], [&bucket_ptrs, &l, &shift](int i) {
 		
 		INT_TYPE num_bucket_keys = (1L << shift);
 		int k1 = i * num_bucket_keys;
@@ -546,20 +543,20 @@ void rank( int iteration )
 	if(TIMER_ENABLED) timer_stop(4);
 
 #else
-	std::fill(pstl::execution::par, &key_buff_ptr[0], &key_buff_ptr[MAX_KEY], 0);
+	std::fill(std::execution::par, &key_buff_ptr[0], &key_buff_ptr[MAX_KEY], 0);
 	
 	typedef tbb::enumerable_thread_specific< std::vector<INT_TYPE> > Work_buff_type;
 	Work_buff_type work_buff2(MAX_KEY,0);
 	
-	std::for_each(pstl::execution::par, &key_buff_ptr2[0], &key_buff_ptr2[NUM_KEYS], [&work_buff2](INT_TYPE k) {work_buff2.local()[k]++;});
+	std::for_each(std::execution::par, &key_buff_ptr2[0], &key_buff_ptr2[NUM_KEYS], [&work_buff2](INT_TYPE k) {work_buff2.local()[k]++;});
 	
 	for (Work_buff_type::iterator j = work_buff2.begin(); j != work_buff2.end(); ++j) {
 		
-		std::transform(pstl::execution::par, &key_buff_ptr[0], &key_buff_ptr[MAX_KEY], j->begin(), &key_buff_ptr[0], std::plus<INT_TYPE>());
+		std::transform(std::execution::par, &key_buff_ptr[0], &key_buff_ptr[MAX_KEY], j->begin(), &key_buff_ptr[0], std::plus<INT_TYPE>());
 		
 	}
 	
-	//std::for_each(pstl::execution::seq, &key_buff_ptr2[0], &key_buff_ptr2[NUM_KEYS], [&key_buff_ptr](INT_TYPE k) {key_buff_ptr[k]++;});
+	//std::for_each(std::execution::seq, &key_buff_ptr2[0], &key_buff_ptr2[NUM_KEYS], [&key_buff_ptr](INT_TYPE k) {key_buff_ptr[k]++;});
 	
 	if(TIMER_ENABLED) timer_stop(4);
 	

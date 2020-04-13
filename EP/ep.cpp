@@ -17,14 +17,14 @@
 
 --------------------------------------------------------------------*/
 
-#include "pstl/execution"
-#include "pstl/algorithm"
-#include "pstl/numeric"
+#include "execution"
+#include "algorithm"
+#include "numeric"
 
 #include <mutex>
 #include <vector>
 #include <numeric>
-#include <tbb/task_scheduler_init.h>
+#include <tbb/tbb.h>
 
 
 
@@ -273,7 +273,7 @@ int main(int argc, char **argv) {
 	std::iota(&v[0], &v[np], 1);
 	
 	EP_Result zero = EP_Result();
-	EP_Result res = std::transform_reduce(pstl::execution::par, &v[0], &v[np], zero, addEP, genGauss);
+	EP_Result res = std::transform_reduce(std::execution::par, &v[0], &v[np], zero, addEP, genGauss);
 	
 	if(TIMERS_ENABLED == TRUE) timer_stop(4);
 	
@@ -297,7 +297,7 @@ int main(int argc, char **argv) {
 	int v[np];
 	std::iota(&v[0], &v[np], 1);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[np], [&an, &sx, &sy, &k_offset, &my_m](int k)
+	std::for_each(std::execution::par, &v[0], &v[np], [&an, &sx, &sy, &k_offset, &my_m](int k)
 	{
 		double t1, t2, t3, t4, x1, x2;
 		int kk, i, ik, l;

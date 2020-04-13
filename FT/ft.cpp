@@ -16,9 +16,9 @@
 
 --------------------------------------------------------------------*/
 
-#include "pstl/execution"
-#include "pstl/algorithm"
-#include "pstl/numeric"
+#include "execution"
+#include "algorithm"
+#include "numeric"
 
 #include <vector>
 #include <numeric>
@@ -226,7 +226,7 @@ static void evolve(dcomplex u0[NZ][NY][NX], dcomplex u1[NZ][NY][NX], int t, int 
 	int v[dims[0][2]];
 	std::iota(&v[0], &v[dims[0][2]], 0);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[dims[0][2]], [&u0, &u1 , &t, &indexmap] (int k) {
+	std::for_each(std::execution::par, &v[0], &v[dims[0][2]], [&u0, &u1 , &t, &indexmap] (int k) {
 		for (int j = 0; j < dims[0][1]; j++) {
 			for (int i = 0; i < NX; i++) {
 				crmul(u1[k][j][i], u0[k][j][i], ex[t*indexmap[k][j][i]]);
@@ -277,7 +277,7 @@ static void compute_initial_conditions(dcomplex u0[NZ][NY][NX]) {
 	int v[dims[0][2]];
 	std::iota(&v[0], &v[dims[0][2]], 0);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[dims[0][2]], [&u0, &starts] (int k)
+	std::for_each(std::execution::par, &v[0], &v[dims[0][2]], [&u0, &starts] (int k)
 	{
 		double * tmp = new double[NX*2*MAXDIM+1];
 		
@@ -429,7 +429,7 @@ static void compute_indexmap(int indexmap[NZ][NY][NX]) {
 	int v[dims[2][0]];
 	std::iota(&v[0], &v[dims[2][0]], 0);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[dims[2][0]], [&indexmap](int i)
+	std::for_each(std::execution::par, &v[0], &v[dims[2][0]], [&indexmap](int i)
 	{
 		int ii =  (i+1+xstart[2]-2+NX/2)%NX - NX/2;
 		int ii2 = ii*ii;
@@ -527,7 +527,7 @@ static void cffts1(int is, int d[3], dcomplex x[NZ][NY][NX], dcomplex xout[NZ][N
 	int v[d[2]];
 	std::iota(&v[0], &v[d[2]], 0);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[d[2]], [&is, &d, &logd, &x, &xout](int k)
+	std::for_each(std::execution::par, &v[0], &v[d[2]], [&is, &d, &logd, &x, &xout](int k)
 	{
 		dcomplex y0[NX][FFTBLOCKPAD];
 		dcomplex y1[NX][FFTBLOCKPAD];
@@ -576,7 +576,7 @@ static void cffts2(int is, int d[3], dcomplex x[NZ][NY][NX],dcomplex xout[NZ][NY
 	int v[d[2]];
 	std::iota(&v[0], &v[d[2]], 0);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[d[2]], [&is, &d, &logd, &x, &xout](int k)
+	std::for_each(std::execution::par, &v[0], &v[d[2]], [&is, &d, &logd, &x, &xout](int k)
 	{
 		dcomplex y0[NX][FFTBLOCKPAD];
 		dcomplex y1[NX][FFTBLOCKPAD];
@@ -625,7 +625,7 @@ static void cffts3(int is, int d[3], dcomplex x[NZ][NY][NX],dcomplex xout[NZ][NY
 	int v[d[1]];
 	std::iota(&v[0], &v[d[1]], 0);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[d[1]], [&is, &d, &logd, &x, &xout](int j)
+	std::for_each(std::execution::par, &v[0], &v[d[1]], [&is, &d, &logd, &x, &xout](int j)
 	{
 		dcomplex y0[NX][FFTBLOCKPAD];
 		dcomplex y1[NX][FFTBLOCKPAD];
@@ -806,7 +806,7 @@ static void fftz2 (int is, int l, int m, int n, int ny, int ny1, dcomplex u[NX],
 		std::vector<int> v(lk);
 		std::iota(v.begin(), v.end(), 0);
 		
-		std::for_each(pstl::execution::par, v.begin(), v.end(), [&i11, &i12, &i21, &i22, &x, &y, &u1](int k)
+		std::for_each(std::execution::par, v.begin(), v.end(), [&i11, &i12, &i21, &i22, &x, &y, &u1](int k)
 		{
 			for (int j = 0; j < ny; j++) {
 				double x11real, x11imag;
@@ -886,7 +886,7 @@ static void checksum(int i, dcomplex u1[NZ][NY][NX]) {
 	int v[1024];
 	std::iota(&v[0], &v[1024], 1);
 	
-	chk = std::transform_reduce(pstl::execution::par, &v[0], &v[1024], chk, 
+	chk = std::transform_reduce(std::execution::par, &v[0], &v[1024], chk, 
 	[](dcomplex total_chk, dcomplex temp_chk) -> dcomplex{
 			total_chk.real += temp_chk.real;
 			total_chk.imag += temp_chk.imag;

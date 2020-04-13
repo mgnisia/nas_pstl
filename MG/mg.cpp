@@ -17,16 +17,16 @@
 			Júnior Löff <loffjh@gmail.com>
 
 --------------------------------------------------------------------*/
-#include "pstl/execution"
-#include "pstl/algorithm"
-#include "pstl/numeric"
+#include "execution"
+#include "algorithm"
+#include "numeric"
 
 #include <mutex>
 #include <algorithm>
 #include <utility>
 #include <vector>
 #include <numeric>
-#include <tbb/task_scheduler_init.h>
+#include <tbb/tbb.h>
 
 //#include "../common/mystl.h"
 
@@ -466,7 +466,7 @@ static void psinv( double ***r, double ***u, int n1, int n2, int n3, double c[4]
 	int v[n3-2];
 	std::iota(&v[0], &v[n3-2], 1);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[n3-2], [&r, &u, &n1, &n2, &c](int i3)
+	std::for_each(std::execution::par, &v[0], &v[n3-2], [&r, &u, &n1, &n2, &c](int i3)
 	{
 		double r1[M], r2[M];
 		for (int i2 = 1; i2 < n2-1; i2++) {
@@ -530,7 +530,7 @@ static void resid( double ***u, double ***v, double ***r, int n1, int n2, int n3
 	int c[n3-2];
 	std::iota(&c[0], &c[n3-2], 1);
 	
-	std::for_each(pstl::execution::par, &c[0], &c[n3-2], [&u, &v, &r, &n1, &n2, &a](int i3)
+	std::for_each(std::execution::par, &c[0], &c[n3-2], [&u, &v, &r, &n1, &n2, &a](int i3)
 	{
 		double u1[M], u2[M];
 		for (int i2 = 1; i2 < n2-1; i2++) {
@@ -612,7 +612,7 @@ static void rprj3( double ***r, int m1k, int m2k, int m3k, double ***s, int m1j,
 	int v[m3j-2];
 	std::iota(&v[0], &v[m3j-2], 1);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[m3j-2], [&r, &s, &m1j, &m2j, &d1, &d2, &d3](int j3)
+	std::for_each(std::execution::par, &v[0], &v[m3j-2], [&r, &s, &m1j, &m2j, &d1, &d2, &d3](int j3)
 	{
 		int j2, j1, i3, i2, i1;
 		double x1[M], y1[M], x2, y2;
@@ -692,7 +692,7 @@ static void interp( double ***z, int mm1, int mm2, int mm3, double ***u, int n1,
 		int v[mm3-1];
 		std::iota(&v[0], &v[mm3-1], 0);
 		
-		std::for_each(pstl::execution::par, &v[0], &v[mm3-1], [&z, &u, &mm1, &mm2](int i3)
+		std::for_each(std::execution::par, &v[0], &v[mm3-1], [&z, &u, &mm1, &mm2](int i3)
 		{
 			double z1[M], z2[M], z3[M];
 			
@@ -751,7 +751,7 @@ static void interp( double ***z, int mm1, int mm2, int mm3, double ***u, int n1,
 		int v1[mm3-d3];
 		std::iota(&v1[0], &v1[mm3-d3], d3);
 		
-		std::for_each(pstl::execution::par, &v1[0], &v1[mm3-d3], [&z, &u, &d1, &d2, &d3, &t1, &t2, &t3, &mm1, &mm2](int i3)
+		std::for_each(std::execution::par, &v1[0], &v1[mm3-d3], [&z, &u, &d1, &d2, &d3, &t1, &t2, &t3, &mm1, &mm2](int i3)
 		{
 			for (int i2 = d2; i2 <= mm2-1; i2++) {
 				for (int i1 = d1; i1 <= mm1-1; i1++) {
@@ -782,7 +782,7 @@ static void interp( double ***z, int mm1, int mm2, int mm3, double ***u, int n1,
 		int v2[mm3];
 		std::iota(&v2[0], &v2[mm3], 1);
 		
-		std::for_each(pstl::execution::par, &v2[0], &v2[mm3], [&z, &u, &d1, &d2, &d3, &t1, &t2, &t3, &mm1, &mm2](int i3)
+		std::for_each(std::execution::par, &v2[0], &v2[mm3], [&z, &u, &d1, &d2, &d3, &t1, &t2, &t3, &mm1, &mm2](int i3)
 		{
 			for (int i2 = d2; i2 <= mm2-1; i2++) {
 				for (int i1 = d1; i1 <= mm1-1; i1++) {
@@ -854,7 +854,7 @@ static void norm2u3(double ***r, int n1, int n2, int n3, double *rnm2, double *r
 	//this is option 1
 	std::pair<double, double> p = std::make_pair (0.0,0.0);
 	
-	p = std::transform_reduce(pstl::execution::par, &r[1], &r[n3-1], p,
+	p = std::transform_reduce(std::execution::par, &r[1], &r[n3-1], p,
 	[](std::pair<double, double> p1, std::pair<double, double> p2) -> std::pair<double, double>{
 		return std::make_pair (p1.first + p2.first, max(p1.second, p2.second));
 	}, [&n1, &n2](double **r) -> std::pair<double, double>{
@@ -885,7 +885,7 @@ static void norm2u3(double ***r, int n1, int n2, int n3, double *rnm2, double *r
 	int v[n3-2];
 	std::iota(&v[0], &v[n3-2], 1);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[n3-2], [&r, &n1, &n2, &p_a, &p_s, &my_m](int i3)
+	std::for_each(std::execution::par, &v[0], &v[n3-2], [&r, &n1, &n2, &p_a, &p_s, &my_m](int i3)
 	{
 		double p_s_tbb = 0.0, p_a_tbb = 0.0;
 		double tmp;
@@ -953,7 +953,7 @@ static void comm3(double ***u, int n1, int n2, int n3) {
 	
 	// axis = 1
 	
-	std::for_each(pstl::execution::par, &v1[0], &v1[n3-2], [&u, &n2, &n1](int i3)
+	std::for_each(std::execution::par, &v1[0], &v1[n3-2], [&u, &n2, &n1](int i3)
 	{
 		for (int i2 = 1; i2 < n2-1; i2++) {
 			u[i3][i2][n1-1] = u[i3][i2][1];
@@ -961,7 +961,7 @@ static void comm3(double ***u, int n1, int n2, int n3) {
 		}
 	});
 	*/
-	std::for_each(pstl::execution::par, &u[1], &u[n3-1], [&n2, &n1](double **u)
+	std::for_each(std::execution::par, &u[1], &u[n3-1], [&n2, &n1](double **u)
 	{
 		for (int i2 = 1; i2 < n2-1; i2++) {
 			u[i2][n1-1] = u[i2][1];
@@ -971,7 +971,7 @@ static void comm3(double ***u, int n1, int n2, int n3) {
 	
 	// axis = 2
 	/*
-	std::for_each(pstl::execution::par, &v1[0], &v1[n3-2], [&u, &n2, &n1](int i3)
+	std::for_each(std::execution::par, &v1[0], &v1[n3-2], [&u, &n2, &n1](int i3)
 	{
 		for (int i1 = 0; i1 < n1; i1++) {
 			u[i3][n2-1][i1] = u[i3][1][i1];
@@ -979,7 +979,7 @@ static void comm3(double ***u, int n1, int n2, int n3) {
 		}
 	});*/
 	
-	std::for_each(pstl::execution::par, &u[1], &u[n3-1], [&n2, &n1](double **u)
+	std::for_each(std::execution::par, &u[1], &u[n3-1], [&n2, &n1](double **u)
 	{
 		for (int i1 = 0; i1 < n1; i1++) {
 			u[n2-1][i1] = u[1][i1];
@@ -992,7 +992,7 @@ static void comm3(double ***u, int n1, int n2, int n3) {
 	
 	// axis = 3
 	
-	std::for_each(pstl::execution::par, &v2[0], &v2[n2], [&u, &n3, &n1](int i2)
+	std::for_each(std::execution::par, &v2[0], &v2[n2], [&u, &n3, &n1](int i2)
 	{
 		for (int i1 = 0; i1 < n1; i1++) {
 			u[n3-1][i2][i1] = u[1][i2][i1];
@@ -1309,7 +1309,7 @@ static void zero3(double ***z, int n1, int n2, int n3) {
 	if(TIMERS_ENABLED == TRUE) timer_start(T_STL);
 	
 	
-	std::for_each(pstl::execution::par, &z[0], &z[n3], [&n1, &n2](double **z)
+	std::for_each(std::execution::par, &z[0], &z[n3], [&n1, &n2](double **z)
 	{
 		for (int i2 = 0; i2 < n2; i2++) {
 			for (int i1 = 0; i1 < n1; i1++) {
@@ -1323,7 +1323,7 @@ static void zero3(double ***z, int n1, int n2, int n3) {
 	int v[n3];
 	std::iota(&v[0], &v[n3], 0);
 	
-	std::for_each(pstl::execution::par, &v[0], &v[n3], [&z, &n1, &n2](int i3)
+	std::for_each(std::execution::par, &v[0], &v[n3], [&z, &n1, &n2](int i3)
 	{
 		for (int i2 = 0; i2 < n2; i2++) {
 			for (int i1 = 0; i1 < n1; i1++) {
