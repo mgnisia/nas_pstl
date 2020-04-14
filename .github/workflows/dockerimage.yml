@@ -11,12 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Kaniko build
+      - name: Ubuntu Contaier build
         uses: outillage/kaniko-action@master
         with:
           image: mgnisia/nas_ubuntu
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           cache: true
-          build_file: Docker/Ubuntu/Dockerfile
+          build_file: Docker/Ubuntu.Dockerfile
+          cache_registry: mgnisia/cache
+      - name: Arch build build
+        uses: outillage/kaniko-action@master
+        with:
+          image: mgnisia/nas_arch
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          cache: true
+          build_file: Docker/Arch.Dockerfile
           cache_registry: mgnisia/cache
