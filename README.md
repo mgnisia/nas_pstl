@@ -1,47 +1,24 @@
 ![Build and run](https://github.com/mgnisia/nas_pstl/workflows/Build%20and%20run/badge.svg)
 ![Docker Images Build](https://github.com/mgnisia/nas_pstl/workflows/Docker%20Images%20Build/badge.svg)
 
-# Instructions for GCC Compiler and Makefiles
+# NAS Benchmark
 
-## Ported Kernels
+## Required Tools / Compilers
 
-- [x] CG
-- [x] EP
-- [x] FT
-- [x] IS
-- [x] MG
+- compiler with pstl support (e.g. gcc9)
+- Thread Build Block Library (TBB)
 
-## Setup with installation of libraries
+## Setup 
 
-### Ubuntu
+### Setup possibilites for TBB
 
-1. `apt-get update && apt-get upgrade`
-2. `apt-get install -y build-essential libtbb-dev`
-
-### Arch
-
-1. `pacman -Sy && pacman -S gcc make intel-tbb libffi`
+* Install TBB manually ([Setup instructions](docs/tbb_manual_setup.md))
+* Install TBB via package repositroy ([Instructions Ubuntu](docs/tbb_manual_setup.md), [Instruction Arch]()) 
 
 
-## Setup with manual download of the tbb library
-
-1. Download [TBB Library](https://github.com/oneapi-src/oneTBB) and [GCC9](https://gcc.gnu.org/gcc-9/changes.html) compiler. Note: Since this version it allows to use the c++17 parallel implementations, i.e. with `std::parallel`. [Link to Release](https://gcc.gnu.org/gcc-9/changes.html)
-
-2. Navigate to the TBB Library and run `make all`, this compiles the TBB library and creates a subfolder in the `build`-directory which includes the compiled version of TBB.
-
-3. Setting the env-variables for the setup as mentioned in this SOF [post](https://stackoverflow.com/questions/10726537/how-to-install-tbb-from-source-on-linux-and-make-it-work).
+### Setup with manual download of the [TBB]((https://github.com/oneapi-src/oneTBB)) library
 
 
-```shell
-# TBB Config as export
-export TBB_INSTALL_DIR=$HOME/.TBB;
-export TBB_INCLUDE=$TBB_INSTALL_DIR/include;
-export TBB_LIBRARY_RELEASE=$TBB_INSTALL_DIR/build/YOUR_VERSION;
-# seperate file, CMD for sourceing: ". .TBBconfig"
-TBB_INSTALL_DIR=$HOME/.TBB;
-TBB_INCLUDE=$TBB_INSTALL_DIR/include;
-TBB_LIBRARY_RELEASE=$TBB_INSTALL_DIR/build/YOUR_VERSION;
-```
 
 4. Run `make cg CLASS=S`
 
