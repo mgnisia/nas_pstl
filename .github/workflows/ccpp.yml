@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Build and run
 
 on:
   push:
@@ -12,18 +12,10 @@ jobs:
     container: mgnisia/nas_ubuntu
     strategy:
       matrix:
-        kernels: [cg, ep]
+        kernels: [cg, ep, ft, mg, is]
     steps:
     - uses: actions/checkout@v2
     - name: make ${{ matrix.kernels }}
       run: make ${{ matrix.kernels }} CLASS=S
     - name: run ${{ matrix.kernels }}
       run: ./bin/${{ matrix.kernels }}.S
-    # - name: make EP
-    #   run: make ep CLASS=S
-    # - name: run EP
-    #   run: ./bin/ep.S
-    # - name: make FT
-    #   run: make ft CLASS=S
-    # - name: run FT
-    #   run: ./bin/ft.S
