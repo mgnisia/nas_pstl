@@ -3,4 +3,4 @@ name: 'UbuntuDocker'
 description: 'Greet someone and record the time'
 runs:
   using: 'docker'
-  image: 'Docker/ubuntu_Dockerfile'
+  image: 'Docker/Ubuntu/Dockerfile'
