@@ -16,18 +16,18 @@ jobs:
   build_container:
     runs-on: ubuntu-latest
     strategy:
-      sys:
-        type: [Ubuntu, Arch]
+      matrix:
+        sys: [Ubuntu, Arch]
     steps:
       - uses: actions/checkout@master
-      - name: Build ${{ sys.type }} Container
+      - name: Build ${{ matrix.sys }} Container
         uses: outillage/kaniko-action@master
         with:
           image: mgnisia/nas_ubuntu
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           cache: true
-          build_file: Docker/${{ sys.type }}.Dockerfile
+          build_file: Docker/${{ matrix.sys }}.Dockerfile
           cache_registry: mgnisia/cache
 
   manual_build:
@@ -35,11 +35,11 @@ jobs:
     # docker in docker approach
     container: docker 
     strategy:
-      sys:
-        type: [Ubuntu, Arch]
+      matrix:
+        sys: [Ubuntu, Arch]
     steps:
       - uses: actions/checkout@master
-      - name: Build manually ${{ sys.type }}
+      - name: Build manually ${{ matrix.sys }}
         run: |
           cd Docker
-          bash build_container.sh ${{ sys.type }}
+          bash build_container.sh ${{ matrix.sys }}
