@@ -12,5 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: setup compiler
+      run: apt-get install -y gcc-9 libtbb-dev
     - name: make
       run: make cg CLASS=S
