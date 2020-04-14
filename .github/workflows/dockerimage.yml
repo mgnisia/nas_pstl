@@ -15,5 +15,7 @@ jobs:
       id: hello
       uses: mgnisia/pstl_npb@master
     # Use the output from the `hello` step
+    - name: Get Current Working directory
+      run: pwd
     - name: Compile Conjugate gradient
       run: make cg CLASS=S
