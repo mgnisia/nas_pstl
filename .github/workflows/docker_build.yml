@@ -13,25 +13,33 @@ on:
       - 'Docker/*'
 
 jobs:
-  hello_world_job:
+  build_container:
     runs-on: ubuntu-latest
+    strategy:
+      sys:
+        type: [Ubuntu, Arch]
     steps:
       - uses: actions/checkout@master
-      - name: Ubuntu Contaier build
+      - name: Build ${{ sys.type }} Container
         uses: outillage/kaniko-action@master
         with:
           image: mgnisia/nas_ubuntu
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           cache: true
-          build_file: Docker/Ubuntu.Dockerfile
+          build_file: Docker/${{ sys.type }}.Dockerfile
           cache_registry: mgnisia/cache
-      - name: Arch build build
-        uses: outillage/kaniko-action@master
-        with:
-          image: mgnisia/nas_arch
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          cache: true
-          build_file: Docker/Arch.Dockerfile
-          cache_registry: mgnisia/cache
+          
+  manual_build:
+    runs-on: ubuntu_latest
+    # docker in docker approach
+    container: docker 
+    strategy:
+      sys:
+        type: [Ubuntu, Arch]
+    steps:
+      - uses: actions/checkout@master
+      - name: Build manually ${{ sys.type }}
+        run: |
+          cd Docker
+          bash build_container.sh ${{ sys.type }}
