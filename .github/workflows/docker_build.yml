@@ -2,9 +2,15 @@ name: Docker Images Build
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - 'Docker/*'
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - 'Docker/*'
 
 jobs:
   hello_world_job:
