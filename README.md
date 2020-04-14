@@ -8,21 +8,16 @@
 - compiler with pstl support (e.g. gcc9)
 - Thread Build Block Library (TBB)
 
-## Setup 
-
-### Setup possibilites for TBB
+## Setup possibilites for TBB
 
 * Install TBB manually ([Setup instructions](docs/tbb_manual_setup.md))
 * Install TBB via package repositroy ([Instructions Ubuntu](docs/tbb_manual_setup.md), [Instruction Arch]()) 
 
+## Build and Run
 
-### Setup with manual download of the [TBB]((https://github.com/oneapi-src/oneTBB)) library
+1. Run `make cg CLASS=S`
 
-
-
-4. Run `make cg CLASS=S`
-
-5. Execute Kernel with `./bin/cg.S`
+2. Execute Kernel with `./bin/cg.S`
 
 
 # Original Readme
