@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - master
-    # paths:
-    #   - 'Docker/*'
+    paths:
+      - 'Docker/*'
   pull_request:
     branches:
       - master
-    # paths:
-    #   - 'Docker/*'
+    paths:
+      - 'Docker/*'
 
 jobs:
   build_container:
