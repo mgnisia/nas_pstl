@@ -13,10 +13,16 @@
 * Install TBB manually ([Setup instructions](docs/tbb_manual_setup.md))
 * Install TBB via package repositroy ([Instructions Ubuntu](docs/tbb_manual_setup.md), [Instruction Arch]()) 
 
+## Docker - Setup
+
+1. `cd Docker`
+2. `./build_container.sh Arch` or `./build_container.sh Ubuntu`
+3. Start the container with  `docker run -it --rm -v $(pwd):/nas/ nas_docker:arch` or `docker run -it --rm -v $(pwd):/nas/ nas_docker:ubuntu`
+4. `cd /nas` proceed with [Build](#build-and-run)
+   
 ## Build and Run
 
 1. Run `make cg CLASS=S`
-
 2. Execute Kernel with `./bin/cg.S`
 
 
