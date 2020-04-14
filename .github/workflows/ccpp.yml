@@ -10,7 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container: mgnisia/nas_ubuntu
+    strategy:
+      matrix:
+        kernels: [cg, ep]
     steps:
     - uses: actions/checkout@v2
-    - name: make
-      run: make cg CLASS=S
+    - name: make ${{ matrix.kernels }}
+      run: make ${{ matrix.kernels }} CLASS=S
+    - name: run ${{ matrix.kernels }}
+      run: ./bin/${{ matrix.kernels }}.S
+    # - name: make EP
+    #   run: make ep CLASS=S
+    # - name: run EP
+    #   run: ./bin/ep.S
+    # - name: make FT
+    #   run: make ft CLASS=S
+    # - name: run FT
+    #   run: ./bin/ft.S
