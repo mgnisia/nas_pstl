@@ -31,7 +31,7 @@ jobs:
           cache_registry: mgnisia/cache
 
   manual_build:
-    runs-on: ubuntu_latest
+    runs-on: ubuntu-latest
     # docker in docker approach
     container: docker 
     strategy:
