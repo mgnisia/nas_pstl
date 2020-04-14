@@ -9,14 +9,14 @@ on:
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@master
-        - name: Kaniko build
-          uses: outillage/kaniko-action@master
-          with:
-            image: mgnisia/nas_ubuntu
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_PASSWORD }}
-            cache: true
-            build_file: ../../Docker/Ubuntu/Dockerfile
-            cache_registry: mgnisia/cache
+    steps:
+      - uses: actions/checkout@master
+      - name: Kaniko build
+        uses: outillage/kaniko-action@master
+        with:
+          image: mgnisia/nas_ubuntu
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          cache: true
+          build_file: ../../Docker/Ubuntu/Dockerfile
+          cache_registry: mgnisia/cache
