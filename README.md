@@ -1,5 +1,4 @@
 ![Build and run](https://github.com/mgnisia/nas_pstl/workflows/Build%20and%20run/badge.svg)
-
 ![Docker Images Build](https://github.com/mgnisia/nas_pstl/workflows/Docker%20Images%20Build/badge.svg)
 
 # Instructions for GCC Compiler and Makefiles
