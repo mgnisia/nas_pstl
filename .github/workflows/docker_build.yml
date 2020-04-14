@@ -42,4 +42,4 @@ jobs:
       - name: Build manually ${{ matrix.sys }}
         run: |
           cd Docker
-          bash build_container.sh ${{ matrix.sys }}
+          sh build_container.sh ${{ matrix.sys }}
