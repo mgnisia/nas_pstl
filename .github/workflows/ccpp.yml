@@ -9,8 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: mgnisia/nas_ubuntu
     steps:
     - uses: actions/checkout@v2
-    - uses: docker://mgnisia/nas_ubuntu
     - name: make
       run: make cg CLASS=S
