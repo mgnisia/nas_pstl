@@ -9,13 +9,12 @@ on:
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Compilation CG
     steps:
-    - name: Hello world action step
+    - name: Definition of Action
       id: hello
       uses: mgnisia/pstl_npb@master
-    # Use the output from the `hello` step
-    - name: Get Current Working directory
-      run: pwd
+    - name: List Current Working directory
+      run: ls -l .
     - name: Compile Conjugate gradient
       run: make cg CLASS=S

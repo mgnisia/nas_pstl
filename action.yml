@@ -1,6 +1,11 @@
-# action.yml for build containers
 name: 'UbuntuDocker'
-description: 'Greet someone and record the time'
+description: 'Build Ubuntu Container'
 runs:
   using: 'docker'
   image: 'Docker/Ubuntu/Dockerfile'
+
+name: 'ArchDocker'
+description: 'Build Arch Container'
+runs:
+  using: 'docker'
+  image: 'Docker/Arch/Dockerfile'
