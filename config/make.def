@@ -40,14 +40,14 @@ C_LIB = -lm -ltbb
 #---------------------------------------------------------------------------
 # These macros are passed to the compiler 
 #---------------------------------------------------------------------------
-C_INC = -I../common 
+# C_INC = -I../common 
 # Manual Definition of the TBB library
-# C_INC = -I../common -I${TBB_INCLUDE} -Wl,-rpath,${TBB_LIBRARY_RELEASE} -L${TBB_LIBRARY_RELEASE}
+C_INC = -I../common -I${TBB_INCLUDE} -Wl,-rpath,${TBB_LIBRARY_RELEASE} -L${TBB_LIBRARY_RELEASE}
 
 #---------------------------------------------------------------------------
 # Global *compile time* flags for C programs (use -w3 -diag-disable 981 -diag-disable 383)
 #---------------------------------------------------------------------------
-CFLAGS = -O3 -std=c++17 -fopenmp
+CFLAGS = -O3 -std=c++17
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
