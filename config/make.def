@@ -42,7 +42,7 @@ C_LIB = -lm -ltbb
 #---------------------------------------------------------------------------
 # C_INC = -I../common 
 # Manual Definition of the TBB library
-C_INC = -I../common -I${TBB_INC} -Wl,-rpath,${TBB_LIBDIR} -L${TBB_LIBDIR}
+C_INC = -I../common ${TBB_INC} -Wl,-rpath,${TBB_LIBDIR} -L${TBB_LIBDIR}
 
 #---------------------------------------------------------------------------
 # Global *compile time* flags for C programs (use -w3 -diag-disable 981 -diag-disable 383)
