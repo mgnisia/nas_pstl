@@ -3,3 +3,7 @@ bin/
 
 # O Files
 *.o
+
+# History Files 
+.bash_history
+.zsh_history
